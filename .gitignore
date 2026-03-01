@@ -1,0 +1,27 @@
+# Airflow
+logs
+*.pid
+simple_auth_manager_passwords.json.generated
+webserver_config.py
+airflow.db*
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# MacOS generated files
+.DS_Store
+
+#Caches
+.pytest_cache
+.ruff_cache
+
+# Env var
+.env

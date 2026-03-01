@@ -1,0 +1,85 @@
+[
+  {
+    "campaign_id": "camp_001",
+    "campaign_name": "Summer Sale 2024",
+    "vendor_timestamp": "2024-01-15T08:30:00Z",
+    "platform": "Meta",
+    "metrics": {
+      "impressions": 125000,
+      "clicks": 3450,
+      "conversions": 287,
+      "spend": 5420.50
+    },
+    "audience": {
+      "region": "US",
+      "age_group": "25-34"
+    },
+    "status": "active"
+  },
+  {
+    "campaign_id": "camp_001",
+    "campaign_name": "Summer Sale 2024",
+    "vendor_timestamp": "2024-01-15T08:30:00Z",
+    "platform": "Meta",
+    "metrics": {
+      "impressions": 125000,
+      "clicks": 3450,
+      "conversions": 287,
+      "spend": 5420.50
+    },
+    "audience": {
+      "region": "US",
+      "age_group": "25-34"
+    },
+    "status": "active"
+  },
+  {
+    "campaign_id": "camp_002",
+    "campaign_name": "Black Friday Promo",
+    "vendor_timestamp": "2024-01-15 08:45:00",
+    "platform": "Google",
+    "metrics": {
+      "impressions": 98750,
+      "clicks": 2156,
+      "conversions": 189,
+      "spend": 3875.25
+    },
+    "audience": {
+      "region": "CA",
+      "age_group": "35-44",
+      "interests": ["tech", "shopping"]
+    },
+    "status": "paused"
+  },
+  {
+    "campaign_id": "camp_003",
+    "campaign_name": "Holiday Push",
+    "vendor_timestamp": "2024-01-15T09:15:00Z",
+    "platform": "LinkedIn",
+    "metrics": {
+      "impressions": 45600,
+      "clicks": 1234,
+      "conversions": null,
+      "spend": 2100.00
+    },
+    "audience": {
+      "region": "US"
+    },
+    "status": "active",
+    "extra_field": "This field is not always present"
+  },
+  {
+    "campaign_id": "camp_004",
+    "campaign_name": "Email Retarget",
+    "vendor_timestamp": "2024-01-15",
+    "platform": "Email",
+    "metrics": {
+      "impressions": 56000,
+      "clicks": 892,
+      "conversions": 67,
+      "spend": 150.00
+    },
+    "audience": null,
+    "status": "archived"
+  }
+]

@@ -1,0 +1,16 @@
+[project]
+name = "flywheel-pipeline"
+version = "0.1.0"
+description = "Processing marketing performance data from multiple vendors."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "apache-airflow>=3.1.7",
+    "pandas>=3.0.1",
+    "pyarrow>=23.0.1",
+    "pytest>=9.0.2",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.15.4", "ty>=0.0.19", ]
+viz=["matplotlib>=3.10.8"]
