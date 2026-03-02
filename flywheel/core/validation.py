@@ -91,16 +91,12 @@ class ValidationEngine:
                 lambda x: self._add_issue(x, "duplicate_record"), axis=1
             )
 
-        # Final Schema Construction (Dynamic)
-
         # Populate system columns
         df["_ingestion_at"] = current_time
         df["_event_ts"] = df["_timestamp_parsed"]
 
         # Derive date part for efficient partitioning by event time
         df["_event_date"] = df["_event_ts"].dt.strftime("%Y-%m-%d").fillna("UNKNOWN")
-
-        # Base internal columns + valid source columns + debug columns
 
         # We want all source columns defined in config, excluding the raw 'timestamp'
         # since we have 'event_timestamp' now

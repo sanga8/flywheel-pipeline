@@ -33,9 +33,6 @@ class PipelineConfig:
     # Target schema for validation
     REQUIRED_COLUMNS = ["campaign_id", "timestamp", "impressions", "clicks", "spend"]
 
-    # Fields that must not be null or empty string
-    MANDATORY_FIELDS = ["campaign_id", "_vendor"]
-
     # Numeric metrics to be coerced and validated
     METRIC_COLUMNS = ["impressions", "clicks", "spend"]
 
@@ -49,3 +46,6 @@ class PipelineConfig:
         "_event_date",
     ]
     DEBUG_COLUMNS = ["_is_valid", "_dq_issues", "_raw_data"]
+
+    # Fields that must not be null or empty string
+    MANDATORY_FIELDS = ["campaign_id", "_vendor"]
