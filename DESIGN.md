@@ -28,4 +28,4 @@ We are targeting a centralized data lake approach where disparate vendor data is
 **Path structure:** `s3://analytics-data/marketing_performance/_event_date=YYYY-MM-DD/_vendor=VENDOR_NAME/part-001.parquet`
 
 **Cost & speed optimized for analytics:** Queries typically filter based on when the event occurred (e.g., "campaign spend last week").
-**Backfilling:**  If we find an error in the data for Jan 15th, we  only need to re-process and overwrite the folder _event_date=2024-01-15.
+**Backfilling:**  If we find an error in the data for Jan 15th or miss an ingestion, we  only need to re-process and overwrite the folder _event_date=2024-01-15.

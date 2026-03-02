@@ -28,7 +28,7 @@ The pipeline generates partitioned Parquet files in the `output/` directory, sim
 ├── pyproject.toml          # Dependencies (uv)
 ```
 
-*Note that the notebook is only here for a simple presentation of the data but we shouldn't do analytics on the ingested data in production but rather have a raw (source) -> bronze (ingested) -> silver -> gold -> mart (fct/dim) transformation pipeline to do analytics and dashboards.*
+*Note that the notebook is only here for a simple presentation of the data but we shouldn't do analytics on the ingested data in production but rather have a raw (source) -> bronze (ingested) -> silver -> gold -> mart (fct/dim) transformation pipeline to do analytics and dashboards. dbt + duckdb would be a good fit there.*
 
 ### Getting started
 ```bash
