@@ -48,4 +48,4 @@ class PipelineConfig:
     DEBUG_COLUMNS = ["_is_valid", "_dq_issues", "_raw_data"]
 
     # Fields that must not be null or empty string
-    MANDATORY_FIELDS = ["campaign_id", "_vendor"]
+    MANDATORY_FIELDS = ["campaign_id", "_vendor", "timestamp"]
