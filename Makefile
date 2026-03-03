@@ -1,4 +1,4 @@
-.PHONY: all lint format type-check test clean
+.PHONY: all lint format type-check test clean airflow clean-airflow
 
 # Run all checks (formatter, linter, type checker, tests)
 all: format lint type-check test
