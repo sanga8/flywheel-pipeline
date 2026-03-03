@@ -27,21 +27,16 @@ class ValidationEngine:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
 
         # Timestamp parsing
-        try:
-            df["_timestamp_parsed"] = pd.to_datetime(
-                df["timestamp"], errors="coerce", utc=True, format="mixed"
-            )
-        except ValueError:
-            df["_timestamp_parsed"] = pd.to_datetime(
-                df["timestamp"], errors="coerce", utc=True
-            )
+        df["_event_ts"] = pd.to_datetime(
+            df["timestamp"], errors="coerce", utc=True, format="mixed"
+        )
 
         # Data Quality Checks
         df["_is_valid"] = True
         df["_dq_issues"] = ""
 
         # Invalid Timestamps
-        mask_bad_ts = df["_timestamp_parsed"].isna()
+        mask_bad_ts = df["_event_ts"].isna()
         if mask_bad_ts.any():
             df.loc[mask_bad_ts, "_is_valid"] = False
             df.loc[mask_bad_ts, "_dq_issues"] = df.loc[mask_bad_ts].apply(
@@ -51,8 +46,7 @@ class ValidationEngine:
         # Negative Metrics
         mask_neg = pd.Series([False] * len(df), index=df.index)
         for col in PipelineConfig.METRIC_COLUMNS:
-            if col in df.columns:
-                mask_neg |= df[col] < 0
+            mask_neg |= df[col] < 0
 
         if mask_neg.any():
             df.loc[mask_neg, "_is_valid"] = False
@@ -72,17 +66,6 @@ class ValidationEngine:
                         lambda x: self._add_issue(x, f"missing_{field}"), axis=1
                     )
 
-        # Ensure internal columns exist for deduplication even if not ingested via standard path
-        if "_vendor" not in df.columns:
-            df["_vendor"] = df.get("vendor", "unknown")
-
-        if "_record_id" not in df.columns:
-            # If record_id is present, use it, otherwise create a placeholder index
-            if "record_id" in df.columns:
-                df["_record_id"] = df["record_id"]
-            else:
-                df["_record_id"] = df.index.astype(str)
-
         # Deduplication
         is_dup = df.duplicated(subset=["_vendor", "_record_id"], keep="first")
         if is_dup.any():
@@ -93,7 +76,6 @@ class ValidationEngine:
 
         # Populate system columns
         df["_ingestion_at"] = current_time
-        df["_event_ts"] = df["_timestamp_parsed"]
 
         # Derive date part for efficient partitioning by event time
         df["_event_date"] = df["_event_ts"].dt.strftime("%Y-%m-%d").fillna("UNKNOWN")

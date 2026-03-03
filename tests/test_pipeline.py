@@ -100,8 +100,8 @@ def test_validation_logic():
         "impressions": [100, -1],
         "clicks": [10, 0],
         "spend": [1.0, 1.0],
-        "vendor": ["A", "A"],
-        "record_id": ["r1", "r2"],
+        "_vendor": ["A", "A"],
+        "_record_id": ["rec_1", "rec_2"],
     }
     df = pd.DataFrame(data)
     processed = pipeline.validation.standardize_and_validate(df)
