@@ -70,7 +70,7 @@ def test_end_to_end_run(clean_output):
     - The directory structure follows the expected naming convention.
     """
     pipeline = DataPipeline(output_dir=clean_output)
-    pipeline.run()
+    result = pipeline.run()
 
     output_path = os.path.join(clean_output, "marketing_performance")
     assert os.path.exists(output_path)
@@ -80,6 +80,13 @@ def test_end_to_end_run(clean_output):
         os.path.join(output_path, "**", "*.parquet"), recursive=True
     )
     assert len(parquet_files) > 0
+
+    raw_path = os.path.join(clean_output, "raw")
+    assert os.path.exists(raw_path)
+
+    raw_files = glob.glob(os.path.join(raw_path, "**", "*.*"), recursive=True)
+    assert len(raw_files) > 0
+    assert result["metrics"]["raw_files_written"] == len(raw_files)
 
 
 def test_validation_logic():

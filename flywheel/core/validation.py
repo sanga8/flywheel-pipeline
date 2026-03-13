@@ -7,9 +7,10 @@ class ValidationEngine:
     """Handles data standardization and validation."""
 
     @staticmethod
-    def _add_issue(row, message):
-        current = row["_dq_issues"]
-        return f"{current}; {message}" if current else message
+    def _append_issue(series: pd.Series, issue: str) -> pd.Series:
+        return series.where(series == "", series + f"; {issue}").mask(
+            series == "", issue
+        )
 
     def standardize_and_validate(self, df: pd.DataFrame) -> pd.DataFrame:
         if df.empty:
@@ -39,8 +40,8 @@ class ValidationEngine:
         mask_bad_ts = df["_event_ts"].isna()
         if mask_bad_ts.any():
             df.loc[mask_bad_ts, "_is_valid"] = False
-            df.loc[mask_bad_ts, "_dq_issues"] = df.loc[mask_bad_ts].apply(
-                lambda x: self._add_issue(x, "invalid_timestamp"), axis=1
+            df.loc[mask_bad_ts, "_dq_issues"] = self._append_issue(
+                df.loc[mask_bad_ts, "_dq_issues"], "invalid_timestamp"
             )
 
         # Negative Metrics
@@ -50,8 +51,8 @@ class ValidationEngine:
 
         if mask_neg.any():
             df.loc[mask_neg, "_is_valid"] = False
-            df.loc[mask_neg, "_dq_issues"] = df.loc[mask_neg].apply(
-                lambda x: self._add_issue(x, "negative_metrics"), axis=1
+            df.loc[mask_neg, "_dq_issues"] = self._append_issue(
+                df.loc[mask_neg, "_dq_issues"], "negative_metrics"
             )
 
         # Mandatory fields
@@ -62,16 +63,16 @@ class ValidationEngine:
                 )
                 if mask_missing.any():
                     df.loc[mask_missing, "_is_valid"] = False
-                    df.loc[mask_missing, "_dq_issues"] = df.loc[mask_missing].apply(
-                        lambda x: self._add_issue(x, f"missing_{field}"), axis=1
+                    df.loc[mask_missing, "_dq_issues"] = self._append_issue(
+                        df.loc[mask_missing, "_dq_issues"], f"missing_{field}"
                     )
 
         # Deduplication
         is_dup = df.duplicated(subset=["_vendor", "_record_id"], keep="first")
         if is_dup.any():
             df.loc[is_dup, "_is_valid"] = False
-            df.loc[is_dup, "_dq_issues"] = df.loc[is_dup].apply(
-                lambda x: self._add_issue(x, "duplicate_record"), axis=1
+            df.loc[is_dup, "_dq_issues"] = self._append_issue(
+                df.loc[is_dup, "_dq_issues"], "duplicate_record"
             )
 
         # Populate system columns

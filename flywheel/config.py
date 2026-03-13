@@ -45,7 +45,7 @@ class PipelineConfig:
         "_event_ts",
         "_event_date",
     ]
-    DEBUG_COLUMNS = ["_is_valid", "_dq_issues", "_raw_data"]
+    DEBUG_COLUMNS = ["_is_valid", "_dq_issues"]
 
     # Fields that must not be null or empty string
     MANDATORY_FIELDS = ["campaign_id", "_vendor", "timestamp"]

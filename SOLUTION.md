@@ -1,5 +1,9 @@
 # Solution Overview
 
+### Architecture Principle
+The curated `marketing_performance` table should contain standardized business fields and technical audit metadata only.
+Raw payload retention belongs to a dedicated landing/bronze dataset.
+
 ## Meeting Business Requirements
 
 1.  **Unified Analytics across Vendors:**
@@ -22,8 +26,8 @@
 
 5.  **Schema Evolution & Recoverability:**
     *   **Challenge:** Vendors often change data formats (e.g. adding new metrics) without notice.
-    *   **Solution:** Implemented a `raw_data` column (JSON string) to store the original unprocessed record.
-    *   **Trade-off:** It increases the storage size (duplicated data), but guarantees **100% recoverability** of new columns without re-ingesting source files.
+    *   **Solution:** Kept the ingestion model focused on normalized analytics fields and metadata only (`_record_id`, `_vendor`, `_event_ts`, `_event_date`, `_is_valid`, `_dq_issues`).
+    *   **Trade-off:** This keeps the table lean and query-friendly, but source-level replay/debug should rely on landing/source files rather than an in-row raw payload.
 
 ## Implementation Choices
 
@@ -61,6 +65,5 @@ For this assessment, I used the local filesystem (`glob.glob`) to simplify testi
 - **Configuration Management:** The `config.py` can be replaced with **Pydantic models** loaded from a YAML/TOML file. This would provide strict validation of the configuration itself (e.g., ensuring `file_pattern` is a valid string, `mapping` is complete) before the pipeline even starts.
 - **Apache Iceberg:** While I used standard Parquet files for this assessment (to keep it lightweight and portable), implementing Iceberg on top would be the logical next step for a production data lake.
     - It provides ACID transactions, schema evolution (handling vendor changes gracefully), and time travel for debugging data issues.
-    - Iceberg's `VARIANT` type (now available in v3) would be ideal for the `raw_data` column. This allows storing semi-structured data efficiently.
 - **DLT (Data Load Tool):** To further reduce boilerplate code, the custom ingestion logic could be replaced with **dlt**. It automatically contracts and evolves the schema when vendors add new columns, which solves the "maintenance burden" of manual mapping.
 - **Analytics with AI:** On top of dashboards, we could add [nao](https://github.com/getnao/nao) - which I'm a recent contributor of - to use natural language to query our data.

@@ -21,7 +21,6 @@ We are targeting a centralized data lake approach where disparate vendor data is
 - `_ingestion_at` (Timestamp): Timestamp when the data was processed on our side.
 - `_is_valid` (Boolean): Data quality flag (True if all validations pass).
 - `_dq_issues` (String): List of data quality issues if any.
-- `_raw_data` (String): Original JSON dump of the record for recoverability.
 
 ## Partitioning Strategy
 **Strategy:** Hive-style partitioning by `_event_date` (event date) and `_vendor`.

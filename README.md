@@ -42,6 +42,14 @@ uv sync --all-groups
 uv run python -m flywheel.pipeline
 ```
 
+### Output layout (simulated S3)
+Each run writes two layers under `output/`:
+
+- Raw landing layer (source files copied as-is): `output/raw/_ingestion_date=YYYY-MM-DD/_vendor=vendor_x/<source-file>`
+- Curated layer (Parquet): `output/marketing_performance/_event_date=YYYY-MM-DD/_vendor=vendor_x/part-*.parquet`
+
+The raw layer is a local simulation of an S3 landing zone. Curated ingestion reads from this raw layer (not directly from `sample_data`), while keeping replayable source files separate from the analytics table.
+
 ### Run in local Airflow
 1. Add a `.env` following the `.env.example` at the project root. 
 2. Run:
